@@ -7,7 +7,7 @@ pragma solidity ^0.8.17;
  * @dev The contract is a stub and not yet implemented.
  */
 
-contract ticket {
+contract ticketContract {
 
     address public ticketId = 0x00000000000000abcdef;
     event public ticketEvent;
@@ -82,7 +82,7 @@ contract ticket {
       emit SellerRefunded();
       state = State.Inactive;
 
-      seller.transfer(value)
+      seller.transfer(value);
     }
 
     function returnTicket(string token) public {

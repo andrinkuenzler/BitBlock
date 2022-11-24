@@ -7,7 +7,7 @@ pragma solidity ^0.8.17;
  * @dev The contract is a stub and not yet implemented.
  */
 
-contract event {
+contract eventContract {
 
   string public eventName;
   uint256 public eventPrice;
