@@ -1,0 +1,7 @@
+const EventContract = artifacts.require("EventContract");
+const Ticket = artifacts.require("Ticket");
+
+module.exports = function(deployer) {
+    deployer.deploy(EventContract);
+    deployer.deploy(Ticket);
+}
