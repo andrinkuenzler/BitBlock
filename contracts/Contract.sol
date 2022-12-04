@@ -15,6 +15,7 @@ contract EventContract {
     uint256 private eventQuantity;
     uint256 private eventQuantityInitial;
     address payable internal seller;
+    address payable internal buyer;
     bool private withdrawn;
 
     // seller calls this function with ETH value defined in transaction, amount has to be calculated on website
@@ -42,7 +43,7 @@ contract EventContract {
         require(eventQuantity > 0);
 
         // send Ticket to buyer
-        BitBlockToken.transferFrom(YOUR_METAMASK_WALLET_ADDRESS, msg.sender, 1);
+        BitBlockToken.transferFrom(buyer, msg.sender, 1);
 
         // decrease available ticket counter
         eventQuantity--;
@@ -50,7 +51,7 @@ contract EventContract {
 
     function returnTicket() public payable {
         // send token from sender to company wallet
-        BitBlockToken.transferFrom(msg.sender, YOUR_METAMASK_WALLET_ADDRESS, 1);
+        BitBlockToken.transferFrom(msg.sender, buyer, 1);
         
         // increment available ticket counter
         eventQuantity++;
@@ -61,7 +62,7 @@ contract EventContract {
 
     function getEntry() public returns(bool) {
         // if token is sent to copany wallet, entry is granted
-        return BitBlockToken.transferFrom(msg.sender, YOUR_METAMASK_WALLET_ADDRESS, 1);
+        return BitBlockToken.transferFrom(msg.sender, buyer, 1);
     }
 
     function withdraw() public {
@@ -69,7 +70,7 @@ contract EventContract {
         require(seller == msg.sender);
 
         // can only be withdrawn once
-        requre(withdrawn == false);
+        require(withdrawn == false);
 
         // send money to event creator
         withdrawn = true;
@@ -93,9 +94,9 @@ contract EventContract {
 // https://www.quicknode.com/guides/smart-contract-development/how-to-create-and-deploy-an-erc20-token
 
 contract ERC20Interface {
-    function totalSupply() public constant returns (uint);
-    function balanceOf(address tokenOwner) public constant returns (uint balance);
-    function allowance(address tokenOwner, address spender) public constant returns (uint remaining);
+    function totalSupply() public returns (uint);
+    function balanceOf(address tokenOwner) public returns (uint balance);
+    function allowance(address tokenOwner, address spender) public returns (uint remaining);
     function transfer(address to, uint tokens) public returns (bool success);
     function approve(address spender, uint tokens) public returns (bool success);
     function transferFrom(address from, address to, uint tokens) public returns (bool success);
@@ -116,17 +117,17 @@ contract BitBlockToken is ERC20Interface {
     function createToken(uint256 quantity) public {
         require(msg.sender == EventContract.getAddress());
         _totalSupply += quantity;
-        balances[YOUR_METAMASK_WALLET_ADDRESS] = _totalSupply;
-        emit Transfer(address(0), YOUR_METAMASK_WALLET_ADDRESS, quantity);
+        balances[msg.sender] = _totalSupply;
+        emit Transfer(address(0), msg.sender, quantity);
     }
  
     // will govern the total supply of the token
-    function totalSupply() public constant returns (uint) {
+    function totalSupply() public returns (uint) {
         return _totalSupply - balances[address(0)];
     }
  
     // will check the balance of a wallet address
-    function balanceOf(address tokenOwner) public constant returns (uint balance) {
+    function balanceOf(address tokenOwner) public returns (uint balance) {
         return balances[tokenOwner];
     }
  
@@ -155,7 +156,7 @@ contract BitBlockToken is ERC20Interface {
     }
  
     // will check if a user has enough balance to perform the transfer to another user
-    function allowance(address tokenOwner, address spender) public constant returns (uint remaining) {
+    function allowance(address tokenOwner, address spender) public returns (uint remaining) {
         return allowed[tokenOwner][spender];
     }
  
@@ -168,7 +169,7 @@ contract BitBlockToken is ERC20Interface {
     }
  
     // prevent accounts from directly sending ETH to the contract, this prevents the users from spending gas on transactions in which they forget to mention the function name
-    function () public payable {
+    fallback() external payable {
         revert();
     }
 }
