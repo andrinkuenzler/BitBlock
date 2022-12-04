@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 /**
@@ -77,9 +78,9 @@ contract EventContract {
         seller.transfer((eventQuantityInitial - eventQuantity) * eventPrice);
     }
 
-    receive() external payable {}
+    receive() external virtual payable {}
 
-    fallback() external payable {}
+    fallback() external virtual payable {}
 
     function getBalance() public view returns(uint) {
         return address(this).balance;
@@ -90,22 +91,50 @@ contract EventContract {
     }
 }
 
-
 // https://www.quicknode.com/guides/smart-contract-development/how-to-create-and-deploy-an-erc20-token
 
-contract ERC20Interface {
-    function totalSupply() public returns (uint);
-    function balanceOf(address tokenOwner) public returns (uint balance);
-    function allowance(address tokenOwner, address spender) public returns (uint remaining);
-    function transfer(address to, uint tokens) public returns (bool success);
-    function approve(address spender, uint tokens) public returns (bool success);
-    function transferFrom(address from, address to, uint tokens) public returns (bool success);
+contract SafeMath {
+ 
+    function safeAdd(uint a, uint b) public pure returns (uint c) {
+        c = a + b;
+        require(c >= a);
+    }
+ 
+    function safeSub(uint a, uint b) public pure returns (uint c) {
+        require(b <= a);
+        c = a - b;
+    }
+ 
+    function safeMul(uint a, uint b) public pure returns (uint c) {
+        c = a * b;
+        require(a == 0 || c / a == b);
+    }
+ 
+    function safeDiv(uint a, uint b) public pure returns (uint c) {
+        require(b > 0);
+        c = a / b;
+    }
+}
+
+abstract contract ApproveAndCallFallBack {
+    function receiveApproval(address from, uint256 tokens, address token, bytes memory data) public virtual;
+}
+
+abstract contract ERC20Interface {
+    function totalSupply() public virtual returns (uint);
+    function balanceOf(address tokenOwner) public virtual returns (uint balance);
+    function allowance(address tokenOwner, address spender) public virtual returns (uint remaining);
+    function transfer(address to, uint tokens) public virtual returns (bool success);
+    function approve(address spender, uint tokens) public virtual returns (bool success);
+    function transferFrom(address from, address to, uint tokens) public virtual returns (bool success);
+    fallback() external virtual payable;
+    receive() external virtual payable;
  
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
 }
  
-contract BitBlockToken is ERC20Interface {
+contract BitBlockToken is ERC20Interface, SafeMath, EventContract {
     string public symbol = "BBT";
     string public name = "BitBlock Ticket";
     uint8 public decimals = 2;
@@ -122,17 +151,17 @@ contract BitBlockToken is ERC20Interface {
     }
  
     // will govern the total supply of the token
-    function totalSupply() public returns (uint) {
+    function totalSupply() public override returns (uint) {
         return _totalSupply - balances[address(0)];
     }
  
     // will check the balance of a wallet address
-    function balanceOf(address tokenOwner) public returns (uint balance) {
+    function balanceOf(address tokenOwner) public override returns (uint balance) {
         return balances[tokenOwner];
     }
  
     // will execute the transfer of tokens from the total supply to users
-    function transfer(address to, uint tokens) public returns (bool success) {
+    function transfer(address to, uint tokens) public override returns (bool success) {
         balances[msg.sender] = safeSub(balances[msg.sender], tokens);
         balances[to] = safeAdd(balances[to], tokens);
         emit Transfer(msg.sender, to, tokens);
@@ -140,14 +169,14 @@ contract BitBlockToken is ERC20Interface {
     }
  
     // will check if the total supply has the amount of token which needs to be allocated to a user
-    function approve(address spender, uint tokens) public returns (bool success) {
+    function approve(address spender, uint tokens) public override returns (bool success) {
         allowed[msg.sender][spender] = tokens;
         emit Approval(msg.sender, spender, tokens);
         return true;
     }
  
     // will facilitate the transfer of token between users
-    function transferFrom(address from, address to, uint tokens) public returns (bool success) {
+    function transferFrom(address from, address to, uint tokens) public override returns (bool success) {
         balances[from] = safeSub(balances[from], tokens);
         allowed[from][msg.sender] = safeSub(allowed[from][msg.sender], tokens);
         balances[to] = safeAdd(balances[to], tokens);
@@ -156,20 +185,22 @@ contract BitBlockToken is ERC20Interface {
     }
  
     // will check if a user has enough balance to perform the transfer to another user
-    function allowance(address tokenOwner, address spender) public returns (uint remaining) {
+    function allowance(address tokenOwner, address spender) public override returns (uint remaining) {
         return allowed[tokenOwner][spender];
     }
  
     // executes the transactions of buying and spending of tokens
-    function approveAndCall(address spender, uint tokens, bytes data) public returns (bool success) {
+    function approveAndCall(address spender, uint tokens, bytes memory data) public returns (bool success) {
         allowed[msg.sender][spender] = tokens;
         emit Approval(msg.sender, spender, tokens);
-        ApproveAndCallFallBack(spender).receiveApproval(msg.sender, tokens, this, data);
+        ApproveAndCallFallBack(spender).receiveApproval(msg.sender, tokens, address(this), data);
         return true;
     }
  
     // prevent accounts from directly sending ETH to the contract, this prevents the users from spending gas on transactions in which they forget to mention the function name
-    fallback() external payable {
+    fallback() external override(ERC20Interface, EventContract) virtual payable {
         revert();
     }
+
+    receive() external override(ERC20Interface, EventContract) virtual payable {}
 }
