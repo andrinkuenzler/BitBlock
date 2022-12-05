@@ -3,6 +3,7 @@ import { hrtime } from "process";
 
 async function main() {
   const Events = await ethers.getContractFactory('EventContract')
+  const Tickets = await ethers.getContractFactory('Tickets')
 }
 
 // We recommend this pattern to be able to use async/await everywhere

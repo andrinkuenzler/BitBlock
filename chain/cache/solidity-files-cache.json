@@ -1,0 +1,44 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/michael/bitblock/chain/contracts/EventContract.sol": {
+      "lastModificationDate": 1670277112952,
+      "contentHash": "b17673161f83df8f24efdbda6b76809a",
+      "sourceName": "contracts/EventContract.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.13"
+      ],
+      "artifacts": [
+        "ApproveAndCallFallBack",
+        "BitBlockToken",
+        "ERC20Interface",
+        "EventContract",
+        "SafeMath"
+      ]
+    }
+  }
+}

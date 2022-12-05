@@ -18,6 +18,7 @@ contract EventContract {
     address payable internal seller;
     address payable internal buyer;
     bool private withdrawn;
+    BitBlockToken private token;
 
     // seller calls this function with ETH value defined in transaction, amount has to be calculated on website
     function createEvent(string memory name, uint256 price, uint256 quantity) external payable {
@@ -33,9 +34,10 @@ contract EventContract {
         
         // creator of event is assigned seller
         seller = payable(msg.sender);
-
-        // mint tokens
-        BitBlockToken.createToken(quantity);
+        
+        token = new BitBlockToken();
+        token.setEventContract(this);
+        token.createToken(quantity);
     }
 
     function buyTicket() public payable {
@@ -44,7 +46,7 @@ contract EventContract {
         require(eventQuantity > 0);
 
         // send Ticket to buyer
-        BitBlockToken.transferFrom(buyer, msg.sender, 1);
+        token.transferFrom(buyer, msg.sender, 1);
 
         // decrease available ticket counter
         eventQuantity--;
@@ -52,7 +54,7 @@ contract EventContract {
 
     function returnTicket() public payable {
         // send token from sender to company wallet
-        BitBlockToken.transferFrom(msg.sender, buyer, 1);
+        token.transferFrom(msg.sender, buyer, 1);
         
         // increment available ticket counter
         eventQuantity++;
@@ -63,7 +65,7 @@ contract EventContract {
 
     function getEntry() public returns(bool) {
         // if token is sent to copany wallet, entry is granted
-        return BitBlockToken.transferFrom(msg.sender, buyer, 1);
+        return token.transferFrom(msg.sender, buyer, 1);
     }
 
     function withdraw() public {
@@ -134,17 +136,24 @@ abstract contract ERC20Interface {
     event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
 }
  
-contract BitBlockToken is ERC20Interface, SafeMath, EventContract {
+contract BitBlockToken is ERC20Interface, SafeMath {
     string public symbol = "BBT";
     string public name = "BitBlock Ticket";
     uint8 public decimals = 2;
     uint public _totalSupply;
+    EventContract public eventContract;
  
     mapping(address => uint) balances;
     mapping(address => mapping(address => uint)) allowed;
- 
-    function createToken(uint256 quantity) public {
-        require(msg.sender == EventContract.getAddress());
+
+    constructor() {}
+
+    function setEventContract(EventContract contract_) public {
+        eventContract = contract_;
+    }
+
+    function createToken(uint256 quantity) public returns(BitBlockToken) {
+        require(msg.sender == eventContract.getAddress());
         _totalSupply += quantity;
         balances[msg.sender] = _totalSupply;
         emit Transfer(address(0), msg.sender, quantity);
@@ -198,9 +207,9 @@ contract BitBlockToken is ERC20Interface, SafeMath, EventContract {
     }
  
     // prevent accounts from directly sending ETH to the contract, this prevents the users from spending gas on transactions in which they forget to mention the function name
-    fallback() external override(ERC20Interface, EventContract) virtual payable {
+    fallback() external override(ERC20Interface) virtual payable {
         revert();
     }
 
-    receive() external override(ERC20Interface, EventContract) virtual payable {}
+    receive() external override(ERC20Interface) virtual payable {}
 }
