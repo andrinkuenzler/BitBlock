@@ -18,19 +18,10 @@ export default function Header() {
       <LinkBox>
         <NextLink href={'/create'} passHref>
           <LinkOverlay>
-            <Heading size="sm">Search Events</Heading>
-          </LinkOverlay>
-        </NextLink>
-      </LinkBox>
-      <LinkBox>
-        <NextLink href={'/search'} passHref>
-          <LinkOverlay>
             <Heading size="sm">Create Event</Heading>
           </LinkOverlay>
         </NextLink>
       </LinkBox>
-      <Spacer />
-      <Button >Button for Account </Button>
     </Flex>
   )
 }

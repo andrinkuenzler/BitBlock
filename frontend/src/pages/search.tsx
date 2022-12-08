@@ -2,14 +2,14 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import NextLink from "next/link"
-import { VStack, Heading, Box, LinkOverlay, LinkBox} from "@chakra-ui/layout"
+import { VStack, Heading, Box, UnorderedList, ListItem, Link} from "@chakra-ui/layout"
 import { Text, Button } from '@chakra-ui/react'
 import { useState, useEffect} from 'react'
 import {ethers} from "ethers"
 
 declare let window:any
 
-const Home: NextPage = () => {
+const Search: NextPage = () => {
   const [balance, setBalance] = useState<string | undefined>()
   const [currentAccount, setCurrentAccount] = useState<string | undefined>()
   const [chainId, setChainId] = useState<number | undefined>()
@@ -72,27 +72,27 @@ const Home: NextPage = () => {
       <Heading as="h3"  my={4}>Event and Ticketplatform</Heading>          
       <VStack>
         <Box w='100%' my={4}>
-        {currentAccount  
-          ? <Button type="button" w='100%' onClick={onClickDisconnect}>
-                Account:{currentAccount}
-            </Button>
-          : <Button type="button" w='100%' onClick={onClickConnect}>
-                  Connect MetaMask
-              </Button>
-        }
+          <UnorderedList>
+            <ListItem>
+              <Link>
+                Konzert Schüür - Mimiks und die starken Männer : 23.01.2023
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link>
+                James Bond - Der Wald ist gross genug : 01.01.2023
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link>
+                Weihnachtskonzert : 24.12.2023
+              </Link>
+            </ListItem>
+          </UnorderedList>
         </Box>
-        {currentAccount  
-          ?<Box  mb={0} p={4} w='100%' borderWidth="1px" borderRadius="lg">
-          <Heading my={4}  fontSize='xl'>Account info</Heading>
-          <Text>ETH Balance of current account: {balance}</Text>
-          <Text>Chain Info: ChainId {chainId} name {chainname}</Text>
-        </Box>
-        :<></>
-        }
-...
       </VStack>
     </>
   )
 }
 
-export default Home
+export default Search

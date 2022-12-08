@@ -34,4 +34,4 @@ const Show: NextPage = () => {
   )
 }
 
-export default Create
+export default Show
