@@ -71,7 +71,7 @@ const Home: NextPage = () => {
 
       <Heading as="h3"  my={4}>Event and Ticketplatform</Heading>          
       <VStack>
-        <Box w='100%' my={4}>
+      <Box w='100%' my={4}>
         {currentAccount  
           ? <Button type="button" w='100%' onClick={onClickDisconnect}>
                 Account:{currentAccount}

@@ -17,4 +17,5 @@ export const ERC20ABI = [
     "event Transfer(address indexed from, address indexed to, uint tokens)",
     "event Approval(address indexed tokenOwner, address indexed spender, uint tokens)",
     "function approve(address spender, uint tokens) public virtual returns (bool success)",
+    "function createToken(uint256 quantity) public"
 ];

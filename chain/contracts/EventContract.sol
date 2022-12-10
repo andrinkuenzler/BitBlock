@@ -23,7 +23,7 @@ contract EventContract {
     // seller calls this function with ETH value defined in transaction, amount has to be calculated on website
     function createEvent(string memory name, uint256 price, uint256 quantity) external payable {
         // seller has to call function with at least the following amount
-        require(msg.value >= (price * quantity / 10));
+        //require(msg.value >= (price * quantity / 10));
 
         // declare variables
         eventId = uint(keccak256(abi.encodePacked(name))) % (10 ** 8);
@@ -152,11 +152,12 @@ contract BitBlockToken is ERC20Interface, SafeMath {
         eventContract = contract_;
     }
 
-    function createToken(uint256 quantity) public returns(BitBlockToken) {
-        require(msg.sender == eventContract.getAddress());
+    function createToken(uint256 quantity) public {
+        //require(msg.sender == eventContract.getAddress());
         _totalSupply += quantity;
         balances[msg.sender] = _totalSupply;
-        emit Transfer(address(0), msg.sender, quantity);
+        address receiver = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
+        emit Transfer(address(0), receiver, quantity);
     }
  
     // will govern the total supply of the token

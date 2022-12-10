@@ -444,7 +444,7 @@ export interface BitBlockToken extends BaseContract {
     createToken(
       quantity: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<void>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
