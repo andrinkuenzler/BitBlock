@@ -20,7 +20,7 @@ contract EventContract {
     address payable internal seller;
     address payable internal buyer;
     bool private withdrawn;
-    BitBlockToken private token;
+    BitBlockToken public token;
 
     // seller calls this function with ETH value defined in transaction, amount has to be calculated on website
     function createEvent(string memory name, uint256 price, uint256 quantity) external payable {
@@ -37,7 +37,7 @@ contract EventContract {
         // creator of event is assigned seller
         seller = payable(msg.sender);
         
-        token = new BitBlockToken();
+        token = BitBlockToken(0x73511669fd4dE447feD18BB79bAFeAC93aB7F31f);
         token.createToken(quantity);
     }
 
@@ -84,14 +84,6 @@ contract EventContract {
     receive() external virtual payable {}
 
     fallback() external virtual payable {}
-
-    function getBalance() public view returns(uint) {
-        return address(this).balance;
-    }
-
-    function getAddress() public view returns(address) {
-        return address(this);
-    }
 }
 
 contract BitBlockToken is ERC20 {
@@ -103,9 +95,8 @@ contract BitBlockToken is ERC20 {
     constructor() ERC20("BitBlockToken", "BBT") {}
 
     function createToken(uint256 quantity) public {
-        //require(msg.sender == eventContract.getAddress());
         _totalSupply += quantity;
-        address receiver = 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC;
+        address receiver = 0x5FbDB2315678afecb367f032d93F642f64180aa3;
         _mint(receiver, quantity);
     }
 }
