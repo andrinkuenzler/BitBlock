@@ -31,18 +31,18 @@ export interface BitBlockTokenInterface extends utils.Interface {
   functions: {
     "_totalSupply()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
+    "allowed(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "approveAndCall(address,uint256,bytes)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "balances(address)": FunctionFragment;
     "createToken(uint256)": FunctionFragment;
     "decimals()": FunctionFragment;
-    "eventContract()": FunctionFragment;
     "name()": FunctionFragment;
     "safeAdd(uint256,uint256)": FunctionFragment;
     "safeDiv(uint256,uint256)": FunctionFragment;
     "safeMul(uint256,uint256)": FunctionFragment;
     "safeSub(uint256,uint256)": FunctionFragment;
-    "setEventContract(address)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -53,18 +53,18 @@ export interface BitBlockTokenInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "_totalSupply"
       | "allowance"
+      | "allowed"
       | "approve"
       | "approveAndCall"
       | "balanceOf"
+      | "balances"
       | "createToken"
       | "decimals"
-      | "eventContract"
       | "name"
       | "safeAdd"
       | "safeDiv"
       | "safeMul"
       | "safeSub"
-      | "setEventContract"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -77,6 +77,10 @@ export interface BitBlockTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "allowance",
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "allowed",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -96,14 +100,14 @@ export interface BitBlockTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "balances",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "createToken",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "eventContract",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "safeAdd",
@@ -120,10 +124,6 @@ export interface BitBlockTokenInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "safeSub",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setEventContract",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
@@ -148,30 +148,24 @@ export interface BitBlockTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "allowed", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "approveAndCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "createToken",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "eventContract",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "safeAdd", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "safeDiv", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "safeMul", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "safeSub", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setEventContract",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -251,6 +245,12 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    allowed(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     approve(
       spender: PromiseOrValue<string>,
       tokens: PromiseOrValue<BigNumberish>,
@@ -269,14 +269,17 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     createToken(
       quantity: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
-
-    eventContract(overrides?: CallOverrides): Promise<[string]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -303,11 +306,6 @@ export interface BitBlockToken extends BaseContract {
       b: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { c: BigNumber }>;
-
-    setEventContract(
-      contract_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -337,6 +335,12 @@ export interface BitBlockToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  allowed(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   approve(
     spender: PromiseOrValue<string>,
     tokens: PromiseOrValue<BigNumberish>,
@@ -355,14 +359,17 @@ export interface BitBlockToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  balances(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   createToken(
     quantity: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
-
-  eventContract(overrides?: CallOverrides): Promise<string>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -389,11 +396,6 @@ export interface BitBlockToken extends BaseContract {
     b: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
-
-  setEventContract(
-    contract_: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -423,6 +425,12 @@ export interface BitBlockToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    allowed(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     approve(
       spender: PromiseOrValue<string>,
       tokens: PromiseOrValue<BigNumberish>,
@@ -441,14 +449,17 @@ export interface BitBlockToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     createToken(
       quantity: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
-
-    eventContract(overrides?: CallOverrides): Promise<string>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -475,11 +486,6 @@ export interface BitBlockToken extends BaseContract {
       b: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    setEventContract(
-      contract_: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -532,6 +538,12 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    allowed(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     approve(
       spender: PromiseOrValue<string>,
       tokens: PromiseOrValue<BigNumberish>,
@@ -550,14 +562,17 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     createToken(
       quantity: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
-
-    eventContract(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -583,11 +598,6 @@ export interface BitBlockToken extends BaseContract {
       a: PromiseOrValue<BigNumberish>,
       b: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    setEventContract(
-      contract_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
@@ -619,6 +629,12 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    allowed(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     approve(
       spender: PromiseOrValue<string>,
       tokens: PromiseOrValue<BigNumberish>,
@@ -637,14 +653,17 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    balances(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     createToken(
       quantity: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    eventContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -670,11 +689,6 @@ export interface BitBlockToken extends BaseContract {
       a: PromiseOrValue<BigNumberish>,
       b: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    setEventContract(
-      contract_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
