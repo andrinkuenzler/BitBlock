@@ -20,7 +20,7 @@ contract EventContract {
     address payable internal seller;
     address payable internal buyer;
     bool private withdrawn;
-    BitBlockToken public token;
+    BitBlockToken private token;
 
     // seller calls this function with ETH value defined in transaction, amount has to be calculated on website
     function createEvent(string memory name, uint256 price, uint256 quantity) external payable {
@@ -37,25 +37,27 @@ contract EventContract {
         // creator of event is assigned seller
         seller = payable(msg.sender);
         
-        token = BitBlockToken(0x73511669fd4dE447feD18BB79bAFeAC93aB7F31f);
+        token = BitBlockToken(0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512);
         token.createToken(quantity);
     }
 
-    function buyTicket() public payable {
+    function buyTicket(uint256 amount) public payable {
         // buyer has to call function with at least the price for one ticket
         require(msg.value > eventPrice);
         require(eventQuantity > 0);
 
         // send Ticket to buyer
-        token.transferFrom(buyer, msg.sender, 1);
+        token.transfer(msg.sender, amount);
 
         // decrease available ticket counter
         eventQuantity--;
     }
 
-    function returnTicket() public payable {
+    function returnTicket(uint256 amount) public payable {
         // send token from sender to company wallet
-        token.transferFrom(msg.sender, buyer, 1);
+        address receiver = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+        token.increaseAllowance(receiver, amount);
+        token.transferFrom(msg.sender, receiver, amount);
         
         // increment available ticket counter
         eventQuantity++;
@@ -66,7 +68,9 @@ contract EventContract {
 
     function getEntry() public returns(bool) {
         // if token is sent to copany wallet, entry is granted
-        return token.transferFrom(msg.sender, buyer, 1);
+        address receiver = 0x90F79bf6EB2c4f870365E785982E1f101E93b906;
+        token.increaseAllowance(receiver, 1);
+        return token.transferFrom(msg.sender, receiver, 1);
     }
 
     function withdraw() public {
@@ -87,15 +91,9 @@ contract EventContract {
 }
 
 contract BitBlockToken is ERC20 {
-    uint public _totalSupply;
- 
-    mapping(address => uint) public balances;
-    mapping(address => mapping(address => uint)) public allowed;
-
     constructor() ERC20("BitBlockToken", "BBT") {}
 
     function createToken(uint256 quantity) public {
-        _totalSupply += quantity;
         address receiver = 0x5FbDB2315678afecb367f032d93F642f64180aa3;
         _mint(receiver, quantity);
     }
