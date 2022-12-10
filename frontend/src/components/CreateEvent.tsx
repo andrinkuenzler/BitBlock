@@ -1,9 +1,8 @@
-import React, { useEffect,useState } from 'react';
-import { Text, Button, Input , NumberInput,  NumberInputField,  FormControl,  FormLabel } from '@chakra-ui/react'
+import React, { useState } from 'react';
+import { Button, Input , NumberInput,  NumberInputField,  FormControl,  FormLabel } from '@chakra-ui/react'
 import {ethers} from 'ethers'
 import { Contract } from "ethers"
-import {parseEther } from 'ethers/lib/utils'
-import { EventContractABI as ecABI, ERC20ABI as ercABI} from 'abi/EventContractABI'
+import { EventContractABI as ecABI} from 'abi/EventContractABI'
 import { TransactionResponse,TransactionReceipt } from "@ethersproject/abstract-provider"
 
 declare let window:any
