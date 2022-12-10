@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/michael/bitblock/chain/contracts/EventContract.sol": {
-      "lastModificationDate": 1670277112952,
-      "contentHash": "b17673161f83df8f24efdbda6b76809a",
+    "/home/ickuenzl/BitBlock/chain/contracts/EventContract.sol": {
+      "lastModificationDate": 1670672298913,
+      "contentHash": "3719cdd1b2eeeefd939241e149c22898",
       "sourceName": "contracts/EventContract.sol",
       "solcConfig": {
         "version": "0.8.17",
