@@ -28,9 +28,9 @@ Hinweise:
 - Für Reset: hardhat mit Ctrl+C stoppen und im Browser beim Remix Fenster F5 drücken. Anschliessend Vorgehen erneut durcharbeiten
 - Methoden des ERC20 Interface können hier nachgeschaut werden:
     https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol
-- returnTicket und getEntry funktionieren noch nicht, da Allowance zu tief. Hier wird die ERC20-Funktion transferFrom() verwendet. Dafür muss aber der Betrag zuerst approved werden. Habe ich aber noch nicht geschafft.
 - eventID im EventContract benötigen wir vermutlich nicht
-- Ich weiss nicht ob der eventPrice im Contract als ETH oder WEI definiert wird
+- eventPrice wird im contract standardsmässig als wei berechnet, manuelle Umrechnung in ETH
+- approveTransaction Funktion im BitBlockToken Contract ergänzt welche increaseAllowance macht. Kann ein security issue sein
 
 Vorgehen:
 1. npx hardhat node
@@ -40,6 +40,12 @@ Vorgehen:
 5. Mit Account#0 zuerst EventContract, dann BitBlockToken deployen
 6. Mit Account#1 createEvent ausführen
     EventContract Account hat nun 5 BBT
-7. Mit Account#2 buyTicket ausführen, dabei boben bei value den eventPrice (Ether) eingeben
+7. Mit Account#2 buyTicket ausführen, dabei oben bei value den eventPrice (Ether) eingeben
     EventContract hat nun noch 5 BBT
     Buyer hat nun 1 BBT
+8. Mit Account#2 getEntry ausführen
+9. Mit Account#2 returnTicket ausführen
+10. Mit Account#1 withdraw ausführen
+    Balance des Contracts verringert sich
+
+
