@@ -13,13 +13,12 @@ interface Props {
     currentAccount: string | undefined
 }
 
-export default function BuyTicket(props:Props){
+export default function RefundTicket(props:Props){
   const eventContract = props.eventContract
   const currentAccount = props.currentAccount
   const [quantity,setQuantity]=useState<string>('100')
-  const [eventname,setEventName]=useState<string>('100')
 
-  async function buyTicket(event:React.FormEvent) {
+  async function returnTicket(event:React.FormEvent) {
     event.preventDefault()
 
     if(!window.ethereum) return    
@@ -27,7 +26,7 @@ export default function BuyTicket(props:Props){
     const signer = provider.getSigner()
     const evContr: Contract = new ethers.Contract(eventContract, ecABI, signer)
 
-    evContr.buyTicket()
+    evContr.returnTicket(quantity)
       .then((tr: TransactionResponse) => {
         console.log(`TransactionResponse TX hash: ${tr.hash}`)
         tr.wait().then((receipt:TransactionReceipt)=>{console.log("transfer receipt",receipt)})
@@ -36,17 +35,10 @@ export default function BuyTicket(props:Props){
  }
 
   const handleChange = (value:string) => setQuantity(value)
-  const handleEventName = (value:string) => setEventName(value)
 
   return (
-    <form onSubmit={buyTicket}>
+    <form onSubmit={returnTicket}>
     <FormControl>
-      <FormLabel htmlFor='eventname'>Event name: </FormLabel>
-      <Select my={3} onChange={handleEventName} required>
-        <option value='Konzert Schüür - Mimiks und die starken Männer : 23.01.2023'>Konzert Schüür - Mimiks und die starken Männer : 23.01.2023</option>
-        <option value='James Bond - Der Wald ist gross genug : 01.01.2023'>James Bond - Der Wald ist gross genug : 01.01.2023</option>
-        <option value='Weihnachtskonzert - 24.12.2023'>Weihnachtskonzert - 24.12.2023</option>
-      </Select>
       <FormLabel htmlFor='quantity'>Quantity: </FormLabel>
       <NumberInput defaultValue={quantity} min={0} max={10000} onChange={handleChange}>
         <NumberInputField />

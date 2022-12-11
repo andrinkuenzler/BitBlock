@@ -1,12 +1,8 @@
 // src/pages/index.tsx
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import NextLink from "next/link"
-import { VStack, Heading, Box, LinkOverlay, LinkBox } from "@chakra-ui/layout"
-import { Text, Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
-import { Field, Form, Formik } from 'formik';
-import { useState, useEffect } from 'react'
-import { ethers } from "ethers"
+import { VStack, Heading, Box } from "@chakra-ui/layout"
+import RefundTicket from "components/RefundTicket"
 
 declare let window: any
 
@@ -19,35 +15,12 @@ const Refund: NextPage = () => {
 
       <Heading as="h3" my={4}>Purchase</Heading>
       <VStack>
-        <Box w='100%' my={4}>
-          <Formik
-            initialValues={{}}
-            onSubmit={(values, actions) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2))
-                actions.setSubmitting(false)
-              }, 1000)
-            }}
-          >
-            {(props) => (
-              <Form>
-                <h4>Refund Ticket</h4>
-
-                <FormControl>
-                  <FormLabel>Event name:</FormLabel><br />
-                  <Input name="eventNameRefund" type="text" value="" required />
-                </FormControl>
-
-
-                <FormControl>
-                  <FormLabel>Number of tickets:</FormLabel><br />
-                  <Input name="ticketQuantityRefund" type="number" min="1" max="1" value="1" required />
-                </FormControl>
-                <Button type="submit" name="send">Send</Button>
-              </Form>
-            )}
-          </Formik>
-
+        <Box  mb={0} p={4} w='100%' borderWidth="1px" borderRadius="lg">
+          <Heading my={4}  fontSize='xl'>Refund Classtoken</Heading>
+          <RefundTicket 
+            eventContract='0x5FbDB2315678afecb367f032d93F642f64180aa3'
+            currentAccount={currentAccount}
+          />
         </Box>
       </VStack>
     </>

@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import NextLink from "next/link"
-import { VStack, Heading, Box, LinkOverlay, LinkBox} from "@chakra-ui/layout"
+import { VStack, Heading, Box } from "@chakra-ui/layout"
 import { Text, Button } from '@chakra-ui/react'
 import { useState, useEffect} from 'react'
 import {ethers} from "ethers"

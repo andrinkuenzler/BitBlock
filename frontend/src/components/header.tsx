@@ -1,6 +1,6 @@
 //src/components/header.tsx
 import NextLink from "next/link"
-import { Flex, Button, useColorModeValue, Spacer, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react'
+import { Flex, useColorModeValue, Spacer, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react'
 
 const siteTitle = "BitBlock"
 export default function Header() {
@@ -19,6 +19,20 @@ export default function Header() {
         <NextLink href={'/create'} passHref>
           <LinkOverlay>
             <Heading size="sm">Create Event</Heading>
+          </LinkOverlay>
+        </NextLink>
+      </LinkBox>
+      <LinkBox ml={4}>
+        <NextLink href={'/purchase'} passHref>
+          <LinkOverlay>
+            <Heading size="sm">Buy Ticket</Heading>
+          </LinkOverlay>
+        </NextLink>
+      </LinkBox>
+      <LinkBox ml={4}>
+        <NextLink href={'/create'} passHref>
+          <LinkOverlay>
+            <Heading size="sm">Refund Ticket</Heading>
           </LinkOverlay>
         </NextLink>
       </LinkBox>
