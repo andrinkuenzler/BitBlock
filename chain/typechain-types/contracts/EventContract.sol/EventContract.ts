@@ -26,12 +26,10 @@ import type {
 
 export interface EventContractInterface extends utils.Interface {
   functions: {
-    "buyTicket()": FunctionFragment;
+    "buyTicket(uint256)": FunctionFragment;
     "createEvent(string,uint256,uint256)": FunctionFragment;
-    "getAddress()": FunctionFragment;
-    "getBalance()": FunctionFragment;
     "getEntry()": FunctionFragment;
-    "returnTicket()": FunctionFragment;
+    "returnTicket(uint256)": FunctionFragment;
     "withdraw()": FunctionFragment;
   };
 
@@ -39,14 +37,15 @@ export interface EventContractInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "buyTicket"
       | "createEvent"
-      | "getAddress"
-      | "getBalance"
       | "getEntry"
       | "returnTicket"
       | "withdraw"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "buyTicket", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "buyTicket",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "createEvent",
     values: [
@@ -55,18 +54,10 @@ export interface EventContractInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
-  encodeFunctionData(
-    functionFragment: "getAddress",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getBalance",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "getEntry", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "returnTicket",
-    values?: undefined
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
@@ -75,8 +66,6 @@ export interface EventContractInterface extends utils.Interface {
     functionFragment: "createEvent",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getAddress", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getEntry", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "returnTicket",
@@ -115,6 +104,7 @@ export interface EventContract extends BaseContract {
 
   functions: {
     buyTicket(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -125,15 +115,12 @@ export interface EventContract extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getAddress(overrides?: CallOverrides): Promise<[string]>;
-
-    getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     getEntry(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     returnTicket(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -143,6 +130,7 @@ export interface EventContract extends BaseContract {
   };
 
   buyTicket(
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -153,15 +141,12 @@ export interface EventContract extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getAddress(overrides?: CallOverrides): Promise<string>;
-
-  getBalance(overrides?: CallOverrides): Promise<BigNumber>;
-
   getEntry(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   returnTicket(
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -170,7 +155,10 @@ export interface EventContract extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    buyTicket(overrides?: CallOverrides): Promise<void>;
+    buyTicket(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     createEvent(
       name: PromiseOrValue<string>,
@@ -179,13 +167,12 @@ export interface EventContract extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getAddress(overrides?: CallOverrides): Promise<string>;
-
-    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
-
     getEntry(overrides?: CallOverrides): Promise<boolean>;
 
-    returnTicket(overrides?: CallOverrides): Promise<void>;
+    returnTicket(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     withdraw(overrides?: CallOverrides): Promise<void>;
   };
@@ -194,6 +181,7 @@ export interface EventContract extends BaseContract {
 
   estimateGas: {
     buyTicket(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -204,15 +192,12 @@ export interface EventContract extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
-
     getEntry(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     returnTicket(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -223,6 +208,7 @@ export interface EventContract extends BaseContract {
 
   populateTransaction: {
     buyTicket(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -233,15 +219,12 @@ export interface EventContract extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     getEntry(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     returnTicket(
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

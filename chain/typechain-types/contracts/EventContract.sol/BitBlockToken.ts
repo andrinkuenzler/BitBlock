@@ -29,12 +29,10 @@ import type {
 
 export interface BitBlockTokenInterface extends utils.Interface {
   functions: {
-    "_totalSupply()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
-    "allowed(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
+    "approveTransaction(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "balances(address)": FunctionFragment;
     "createToken(uint256)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
@@ -48,12 +46,10 @@ export interface BitBlockTokenInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "_totalSupply"
       | "allowance"
-      | "allowed"
       | "approve"
+      | "approveTransaction"
       | "balanceOf"
-      | "balances"
       | "createToken"
       | "decimals"
       | "decreaseAllowance"
@@ -66,15 +62,7 @@ export interface BitBlockTokenInterface extends utils.Interface {
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "_totalSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "allowance",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "allowed",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -82,11 +70,11 @@ export interface BitBlockTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "balanceOf",
-    values: [PromiseOrValue<string>]
+    functionFragment: "approveTransaction",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "balances",
+    functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -121,15 +109,13 @@ export interface BitBlockTokenInterface extends utils.Interface {
     ]
   ): string;
 
+  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "_totalSupply",
+    functionFragment: "approveTransaction",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "allowed", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "createToken",
     data: BytesLike
@@ -215,17 +201,9 @@ export interface BitBlockToken extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    _totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     allowance(
       owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    allowed(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -235,13 +213,14 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    approveTransaction(
+      owner: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     balanceOf(
       account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    balances(
-      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -284,17 +263,9 @@ export interface BitBlockToken extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  _totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
   allowance(
     owner: PromiseOrValue<string>,
     spender: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  allowed(
-    arg0: PromiseOrValue<string>,
-    arg1: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -304,13 +275,14 @@ export interface BitBlockToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  approveTransaction(
+    owner: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   balanceOf(
     account: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  balances(
-    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -353,17 +325,9 @@ export interface BitBlockToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    _totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    allowed(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -373,13 +337,14 @@ export interface BitBlockToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    approveTransaction(
+      owner: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     balanceOf(
       account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    balances(
-      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -447,17 +412,9 @@ export interface BitBlockToken extends BaseContract {
   };
 
   estimateGas: {
-    _totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
     allowance(
       owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    allowed(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -467,13 +424,14 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    balanceOf(
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    approveTransaction(
+      owner: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    balances(
-      arg0: PromiseOrValue<string>,
+    balanceOf(
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -517,17 +475,9 @@ export interface BitBlockToken extends BaseContract {
   };
 
   populateTransaction: {
-    _totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     allowance(
       owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    allowed(
-      arg0: PromiseOrValue<string>,
-      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -537,13 +487,14 @@ export interface BitBlockToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    balanceOf(
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    approveTransaction(
+      owner: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    balances(
-      arg0: PromiseOrValue<string>,
+    balanceOf(
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

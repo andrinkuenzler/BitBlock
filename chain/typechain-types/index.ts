@@ -12,13 +12,7 @@ export type { IERC20Metadata } from "./@openzeppelin/contracts/token/ERC20/exten
 export { IERC20Metadata__factory } from "./factories/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata__factory";
 export type { IERC20 } from "./@openzeppelin/contracts/token/ERC20/IERC20";
 export { IERC20__factory } from "./factories/@openzeppelin/contracts/token/ERC20/IERC20__factory";
-export type { ApproveAndCallFallBack } from "./contracts/EventContract.sol/ApproveAndCallFallBack";
-export { ApproveAndCallFallBack__factory } from "./factories/contracts/EventContract.sol/ApproveAndCallFallBack__factory";
 export type { BitBlockToken } from "./contracts/EventContract.sol/BitBlockToken";
 export { BitBlockToken__factory } from "./factories/contracts/EventContract.sol/BitBlockToken__factory";
-export type { ERC20Interface } from "./contracts/EventContract.sol/ERC20Interface";
-export { ERC20Interface__factory } from "./factories/contracts/EventContract.sol/ERC20Interface__factory";
 export type { EventContract } from "./contracts/EventContract.sol/EventContract";
 export { EventContract__factory } from "./factories/contracts/EventContract.sol/EventContract__factory";
-export type { SafeMath } from "./contracts/EventContract.sol/SafeMath";
-export { SafeMath__factory } from "./factories/contracts/EventContract.sol/SafeMath__factory";

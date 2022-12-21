@@ -25,25 +25,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "ApproveAndCallFallBack",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ApproveAndCallFallBack__factory>;
-    getContractFactory(
       name: "BitBlockToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BitBlockToken__factory>;
     getContractFactory(
-      name: "ERC20Interface",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20Interface__factory>;
-    getContractFactory(
       name: "EventContract",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.EventContract__factory>;
-    getContractFactory(
-      name: "SafeMath",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.SafeMath__factory>;
 
     getContractAt(
       name: "ERC20",
@@ -61,30 +49,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
-      name: "ApproveAndCallFallBack",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ApproveAndCallFallBack>;
-    getContractAt(
       name: "BitBlockToken",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.BitBlockToken>;
     getContractAt(
-      name: "ERC20Interface",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC20Interface>;
-    getContractAt(
       name: "EventContract",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.EventContract>;
-    getContractAt(
-      name: "SafeMath",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.SafeMath>;
 
     // default types
     getContractFactory(
