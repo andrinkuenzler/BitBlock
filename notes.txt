@@ -28,7 +28,6 @@ Hinweise:
 - Für Reset: hardhat mit Ctrl+C stoppen und im Browser beim Remix Fenster F5 drücken. Anschliessend Vorgehen erneut durcharbeiten
 - Methoden des ERC20 Interface können hier nachgeschaut werden:
     https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol
-- eventID im EventContract benötigen wir vermutlich nicht
 - eventPrice wird im contract standardsmässig als wei berechnet, manuelle Umrechnung in ETH
 - approveTransaction Funktion im BitBlockToken Contract ergänzt welche increaseAllowance macht. Kann ein security issue sein
 
@@ -39,7 +38,7 @@ Vorgehen:
 4. Hardhat als Environment auswählen
 5. Mit Account#0 zuerst EventContract, dann BitBlockToken deployen
 6. Mit Account#1 createEvent ausführen
-    EventContract Account hat nun 5 BBT
+    EventContract Account hat nun X BBT
 7. Mit Account#2 buyTicket ausführen, dabei oben bei value den eventPrice (Ether) eingeben
     EventContract hat nun noch 5 BBT
     Buyer hat nun 1 BBT
@@ -47,5 +46,3 @@ Vorgehen:
 9. Mit Account#2 returnTicket ausführen
 10. Mit Account#1 withdraw ausführen
     Balance des Contracts verringert sich
-
-
