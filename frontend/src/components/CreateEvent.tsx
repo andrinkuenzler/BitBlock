@@ -52,7 +52,7 @@ export default function CreateEvent(props:Props){
       <NumberInput defaultValue={price} min={0} max={10000} onChange={handlePrice}>
         <NumberInputField />
       </NumberInput>
-      <Button type="submit" isDisabled={!currentAccount}>Transfer</Button>
+      <Button type="submit" isDisabled={!currentAccount} my={3}>Transfer</Button>
     </FormControl>
     </form>
   )
